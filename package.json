@@ -1,6 +1,6 @@
 {
   "name": "cake-chart",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Interactive multi-layer pie chart",
   "main": "lib/index.js",
   "scripts": {
@@ -32,9 +32,6 @@
     "eslint-loader": "^1.0.0",
     "eslint-plugin-babel": "^2.0.0",
     "eslint-plugin-react": "^3.2.2"
-  },
-  "peerDependencies": {
-    "react": "^0.13.3"
   },
   "dependencies": {
     "classnames": "^2.1.3",
