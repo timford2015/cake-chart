@@ -1,6 +1,7 @@
 // http://codepen.io/maydie/details/OVmxZZ
 
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import dft from '../utils/treeUtils.js';
 import getTextCoordinates from '../utils/getTextCoordinates';
 import createSliceTree from '../utils/createSliceTree';
@@ -157,8 +158,8 @@ export default class CakeChart extends Component {
   debouncedWindowResize = throttle(this.handleWindowResize, 50)
 
   updateLabelsSize = () => {
-    const labelsEl = React.findDOMNode(this.refs.labels);
-    const containerEl = React.findDOMNode(this.refs.container);
+    const labelsEl = ReactDOM.findDOMNode(this.refs.labels); // Yuck.
+    const containerEl = this.refs.container;
     const size = Math.min(containerEl.offsetHeight, containerEl.offsetWidth);
     labelsEl.style.height = size + 'px';
     labelsEl.style.width = size + 'px';
