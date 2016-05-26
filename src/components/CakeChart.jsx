@@ -231,21 +231,21 @@ export default class CakeChart extends Component {
   renderTexts(block, center, key) {
     const { getLabelProps, getLabel, sheet: { classes } } = this.props;
 
+    var texts = block.slices.map(slice =>{
+        <div {...getLabelProps(
+        slice, block.slices.indexOf(slice),
+        getDefaultLabelProps(
+          slice,
+          block.slices.indexOf(slice),
+          center,
+          this.props,
+          classes
+        ),
+      )}>{getLabel(slice, getDefaultLabel(slice))}</div>});
     return (
       <div key={key}
            className={ringSheet.classes['labels-' + block.level]}>
-        block.slices.map(slice => {}<div {...getLabelProps(
-          slice, block.slices.indexOf(slice),
-          getDefaultLabelProps(
-            slice,
-            block.slices.indexOf(slice),
-            center,
-            this.props,
-            classes
-          ),
-        )}>
-          {getLabel(slice, getDefaultLabel(slice))}
-        </div>});
+          {texts}
       </div>
     );
   }
