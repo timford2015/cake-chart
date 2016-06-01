@@ -6,8 +6,6 @@ import useSheet from 'react-jss';
 import classNames from 'classnames';
 
 @useSheet({
-  slice: { },
-
   sliceActive: {
     cursor: 'pointer'
   }
@@ -49,7 +47,8 @@ export default class Ring extends Component {
               [classes.slice]: true
             }),
             stroke, strokeWidth, sliceRadiusRange, onClick, level,
-            title: getTitle(slice, slice.node.title)
+            title: getTitle(slice, slice.node.title),
+            label: getTitle(slice, slice.node.title)
           })} />
         )}
       </g>

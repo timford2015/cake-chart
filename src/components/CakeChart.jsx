@@ -184,20 +184,6 @@ export default class CakeChart extends Component {
       <div className={className}
            style={style}
            ref='container'>
-        <div className={classes.labels}>
-          <CSSTransitionGroup component='div'
-                              className={classes.labelsTransition}
-                              transitionName={labelTransitionName}
-                              transitionEnterTimeout={500}
-                              transitionLeaveTimeout={300}
-                              transitionAppear={true}
-                              transitionAppearTimeout={500}
-                              ref='labels'>
-            {sliceTree.map((block, idx) =>
-              this.renderTexts(block, center, `${idx}-${key}`)
-            )}
-          </CSSTransitionGroup>
-        </div>
         <svg width='100%'
              height='100%'
              viewBox={`0 0 ${diameter} ${diameter}`}

@@ -18,7 +18,9 @@ export default class Slice extends Component {
     strokeWidth: PropTypes.number,
     className: PropTypes.string,
     onClick: PropTypes.func,
-    node: PropTypes.any
+    node: PropTypes.any,
+    title: PropTypes.string,
+    label: PropTypes.string
   }
 
   static defaultProps = {
@@ -48,13 +50,23 @@ export default class Slice extends Component {
   }
 
   render () {
-    const { fill, stroke, strokeWidth, className } = this.props;
+    const { fill, stroke, strokeWidth, className, angleRange, sliceRadiusRange } = this.props;
+    const labelPos = getAnglePoint((angleRange.start + angleRange.end) / 2, 0, (sliceRadiusRange.end + sliceRadiusRange.start) / 2, 0, 0);
+    const showLabel = angleRange.end - angleRange.start > 15;
+    const label = [];
+    if (showLabel) {
+      label.push(<rect stroke={stroke} style={{strokeWidth: 4}} fill={fill} x={labelPos.x1 - 50} y={labelPos.y1 - 20} width={100} height={40} rx={20} ry={20}/>);
+      label.push(<text style={{textAnchor: 'middle', alignmentBaseline: 'middle', fontSize: 20}} fill='white' x={labelPos.x1} y={labelPos.y1}>{this.props.label}</text>);
+    }
     return (
-      <path d={this.drawPath()}
-            onClick={this.handleClick}
-            {...{ fill, stroke, strokeWidth, className }}>
-        <title>{this.props.title}</title>
-      </path>
+      <g>
+        <path d={this.drawPath()}
+              onClick={this.handleClick}
+              {...{ fill, stroke, strokeWidth, className }}>
+          <title>{this.props.title}</title>
+        </path>
+        {label}
+      </g>
     );
   }
 
