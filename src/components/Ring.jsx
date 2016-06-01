@@ -10,11 +10,6 @@ import classNames from 'classnames';
 
   sliceActive: {
     cursor: 'pointer'
-  },
-
-  backgroundRect: {
-    visibility: 'none',
-    'pointer-events': 'none'
   }
 })
 export default class Ring extends Component {
@@ -42,9 +37,6 @@ export default class Ring extends Component {
 
     return (
       <g className={className}>
-        <rect x={center - rectSize} y={center - rectSize}
-              width={rectSize * 2} height={rectSize * 2}
-              fill='transparent' className={classes.backgroundRect} />
         {slices.map((slice, idx) =>
           <Slice {...getSliceProps(slice, idx, {
             key: idx,
