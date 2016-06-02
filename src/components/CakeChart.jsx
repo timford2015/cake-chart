@@ -168,7 +168,7 @@ export default class CakeChart extends Component {
   render() {
     const { sheet: { classes } } = this.props;
     const { coreRadius, ringWidth, onClick, getRingProps, getSliceProps,
-            style, data, getKey, stroke, strokeWidth, limit, ringWidthFactor, getTitle,
+            style, data, getKey, stroke, strokeWidth, limit, ringWidthFactor, getTitle, getLabel,
             transitionName = classes.pieChart,
             labelTransitionName = classes.labelsBox,
             className = classes.wrapper } = this.props;
@@ -223,7 +223,7 @@ export default class CakeChart extends Component {
                     ringWidthFactor
                   ),
                   center, getSliceProps,
-                  stroke, strokeWidth, onClick, getTitle
+                  stroke, strokeWidth, onClick, getTitle, getLabel
                 })} />
               )}
             </CSSTransitionGroup>
