@@ -51,12 +51,13 @@ export default class Slice extends Component {
 
   render () {
     const { fill, stroke, strokeWidth, className, angleRange, sliceRadiusRange } = this.props;
-    const labelPos = getAnglePoint((angleRange.start + angleRange.end) / 2, 0, (sliceRadiusRange.end + sliceRadiusRange.start) / 2, 0, 0);
+    const labelPos = getAnglePoint((angleRange.start + angleRange.end) / 2, 0, (sliceRadiusRange.end + sliceRadiusRange.start) / 1.8, 0, 0);
     const showLabel = angleRange.end - angleRange.start > 15;
     const label = [];
     if (showLabel) {
-      label.push(<rect filter='url(#dropshadow)' stroke={stroke} style={{strokeWidth: 4}} fill={fill} x={labelPos.x1 - 50} y={labelPos.y1 - 20} width={100} height={40} rx={20} ry={20}/>);
-      label.push(<text style={{textAnchor: 'middle', alignmentBaseline: 'middle', fontSize: 20}} fill='white' x={labelPos.x1} y={labelPos.y1}>{this.props.label}</text>);
+      const width = 48 + 10 * this.props.title.length;
+      label.push(<rect filter='url(#dropshadow)' stroke={stroke} style={{strokeWidth: 4}} fill={fill} x={labelPos.x1 - width / 2} y={labelPos.y1 - 24} width={width} height={48} rx={24} ry={24}/>);
+      label.push(<text style={{textAnchor: 'middle', alignmentBaseline: 'middle', fontSize: 24}} fill='white' x={labelPos.x1} y={labelPos.y1}>{this.props.label}</text>);
     }
     return (
       <g>
