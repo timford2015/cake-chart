@@ -190,6 +190,19 @@ export default class CakeChart extends Component {
              xmlns='http://www.w3.org/2000/svg'
              version='1.1'
              className={classes.svg}>
+          <defs>
+            <filter id="dropshadow" height="130%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+              <feOffset dx="2" dy="2" result="offsetblur"/>
+              <feComponentTransfer>
+                <feFuncA type="linear" slope="0.4"/>
+              </feComponentTransfer>
+              <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
           <g style={centerRule.style}>
             <CSSTransitionGroup component={'g'}
                                 transitionName={transitionName}
