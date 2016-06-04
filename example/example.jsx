@@ -31,4 +31,4 @@ const TREE = {
   }]
 };
 
-ReactDOM.render(<CakeChart data={TREE} coreRadius={200} ringWidth={100} limit={2}/>, document.getElementById('chart'));
+ReactDOM.render(<CakeChart data={TREE} coreRadius={200} ringWidth={100}/>, document.getElementById('chart'));
