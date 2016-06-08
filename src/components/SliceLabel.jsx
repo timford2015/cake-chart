@@ -32,7 +32,7 @@ export default class SliceLabel extends Component {
     return (
       <g>
         <rect filter='url(#dropshadow)' stroke={stroke} style={{strokeWidth: strokeWidth}} fill={fill} x={labelPos.x1 - width / 2} y={labelPos.y1 - 24} width={width} height={48} rx={24} ry={24}/>
-        <text style={{textAnchor: 'middle', alignmentBaseline: 'middle', fontSize: 24}} fill='white' x={labelPos.x1} y={labelPos.y1}>label</text>
+        <text style={{textAnchor: 'middle', alignmentBaseline: 'middle', fontSize: 24}} fill='white' x={labelPos.x1} y={labelPos.y1}>{label}</text>
       </g>
     );
   }
