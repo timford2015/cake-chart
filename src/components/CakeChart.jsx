@@ -14,7 +14,6 @@ import getDefaultColor from '../utils/getDefaultColor';
 import classNames from 'classnames';
 import { sheet, createDefaultSheets } from '../utils/defaultSheets';
 import useSheet from 'react-jss';
-import throttle from 'lodash.throttle';
 
 jss.use(JssVendorPrefixer);
 
@@ -136,33 +135,17 @@ export default class CakeChart extends Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.debouncedWindowResize);
-    this.updateLabelsSize();
   }
 
   componentWillUpdate(nextProps) {
     if (nextProps.limit !== this.props.limit) {
       attachRingSheets(nextProps);
     }
-    this.updateLabelsSize();
   }
 
   componentWillUnount() {
     detachRingSheets();
     window.removeEventListener('resize', this.debouncedWindowResize);
-  }
-
-  handleWindowResize = () => {
-    window.requestAnimationFrame(this.updateLabelsSize);
-  }
-
-  debouncedWindowResize = throttle(this.handleWindowResize, 50)
-
-  updateLabelsSize = () => {
-    const labelsEl = ReactDOM.findDOMNode(this.refs.labels); // Yuck.
-    const containerEl = this.refs.container;
-    const size = Math.min(containerEl.offsetHeight, containerEl.offsetWidth);
-    labelsEl.style.height = size + 'px';
-    labelsEl.style.width = size + 'px';
   }
 
   render() {

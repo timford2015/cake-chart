@@ -50,23 +50,14 @@ export default class Slice extends Component {
   }
 
   render () {
-    const { fill, stroke, strokeWidth, className, angleRange, sliceRadiusRange } = this.props;
-    const labelPos = getAnglePoint((angleRange.start + angleRange.end) / 2, 0, (sliceRadiusRange.end + sliceRadiusRange.start) / 1.8, 0, 0);
-    const showLabel = angleRange.end - angleRange.start > 15;
-    const label = [];
-    if (showLabel) {
-      const width = 48 + 10 * this.props.title.length;
-      label.push(<rect filter='url(#dropshadow)' stroke={stroke} style={{strokeWidth: 4}} fill={fill} x={labelPos.x1 - width / 2} y={labelPos.y1 - 24} width={width} height={48} rx={24} ry={24}/>);
-      label.push(<text style={{textAnchor: 'middle', alignmentBaseline: 'middle', fontSize: 24}} fill='white' x={labelPos.x1} y={labelPos.y1}>{this.props.label}</text>);
-    }
+    const { fill, stroke, strokeWidth, className, title } = this.props;
     return (
       <g>
         <path d={this.drawPath()}
               onClick={this.handleClick}
               {...{ fill, stroke, strokeWidth, className }}>
-          <title>{this.props.title}</title>
+          <title>{title}</title>
         </path>
-        {label}
       </g>
     );
   }
