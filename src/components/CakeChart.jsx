@@ -14,7 +14,6 @@ import getDefaultColor from '../utils/getDefaultColor';
 import classNames from 'classnames';
 import { sheet, createDefaultSheets } from '../utils/defaultSheets';
 import useSheet from 'react-jss';
-import throttle from 'lodash.throttle';
 
 jss.use(JssVendorPrefixer);
 
@@ -136,14 +135,12 @@ export default class CakeChart extends Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.debouncedWindowResize);
-    this.updateLabelsSize();
   }
 
   componentWillUpdate(nextProps) {
     if (nextProps.limit !== this.props.limit) {
       attachRingSheets(nextProps);
     }
-    this.updateLabelsSize();
   }
 
   componentWillUnount() {
@@ -151,24 +148,10 @@ export default class CakeChart extends Component {
     window.removeEventListener('resize', this.debouncedWindowResize);
   }
 
-  handleWindowResize = () => {
-    window.requestAnimationFrame(this.updateLabelsSize);
-  }
-
-  debouncedWindowResize = throttle(this.handleWindowResize, 50)
-
-  updateLabelsSize = () => {
-    const labelsEl = ReactDOM.findDOMNode(this.refs.labels); // Yuck.
-    const containerEl = this.refs.container;
-    const size = Math.min(containerEl.offsetHeight, containerEl.offsetWidth);
-    labelsEl.style.height = size + 'px';
-    labelsEl.style.width = size + 'px';
-  }
-
   render() {
     const { sheet: { classes } } = this.props;
     const { coreRadius, ringWidth, onClick, getRingProps, getSliceProps,
-            style, data, getKey, stroke, strokeWidth, limit, ringWidthFactor, getTitle,
+            style, data, getKey, stroke, strokeWidth, limit, ringWidthFactor, getTitle, getLabel,
             transitionName = classes.pieChart,
             labelTransitionName = classes.labelsBox,
             className = classes.wrapper } = this.props;
@@ -184,33 +167,31 @@ export default class CakeChart extends Component {
       <div className={className}
            style={style}
            ref='container'>
-        <div className={classes.labels}>
-          <CSSTransitionGroup component='div'
-                              className={classes.labelsTransition}
-                              transitionName={labelTransitionName}
-                              transitionEnterTimeout={500}
-                              transitionLeaveTimeout={300}
-                              transitionAppear={true}
-                              transitionAppearTimeout={500}
-                              ref='labels'>
-            {sliceTree.map((block, idx) =>
-              this.renderTexts(block, center, `${idx}-${key}`)
-            )}
-          </CSSTransitionGroup>
-        </div>
         <svg width='100%'
              height='100%'
              viewBox={`0 0 ${diameter} ${diameter}`}
              xmlns='http://www.w3.org/2000/svg'
              version='1.1'
              className={classes.svg}>
+          <defs>
+            <filter id="dropshadow" height="130%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+              <feOffset dx="2" dy="2" result="offsetblur"/>
+              <feComponentTransfer>
+                <feFuncA type="linear" slope="0.4"/>
+              </feComponentTransfer>
+              <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
           <g style={centerRule.style}>
             <CSSTransitionGroup component={'g'}
                                 transitionName={transitionName}
                                 transitionEnterTimeout={500}
                                 transitionLeaveTimeout={300}
-                                transitionAppear={true}
-                                transitionAppearTimeout={500}>
+                                transitionAppear={true}>
               {sliceTree.map((block, idx) =>
                 <Ring {...getRingProps(block, {
                   key: `${idx}-${key}`,
@@ -224,7 +205,7 @@ export default class CakeChart extends Component {
                     ringWidthFactor
                   ),
                   center, getSliceProps,
-                  stroke, strokeWidth, onClick, getTitle
+                  stroke, strokeWidth, onClick, getTitle, getLabel
                 })} />
               )}
             </CSSTransitionGroup>
@@ -237,17 +218,17 @@ export default class CakeChart extends Component {
   renderTexts(block, center, key) {
     const { getLabelProps, getLabel, sheet: { classes } } = this.props;
 
-    var texts = block.slices.map(slice =>{
-        <div {...getLabelProps(
-        slice, block.slices.indexOf(slice),
-        getDefaultLabelProps(
-          slice,
-          block.slices.indexOf(slice),
-          center,
-          this.props,
-          classes
-        ),
-      )}>{getLabel(slice, getDefaultLabel(slice))}</div>});
+    var texts = block.slices.map(slice => {
+        return <div {...getLabelProps(
+                  slice, block.slices.indexOf(slice),
+                  getDefaultLabelProps(
+                    slice,
+                    block.slices.indexOf(slice),
+                    center,
+                    this.props,
+                    classes
+                  ),
+                )}>{getLabel(slice, getDefaultLabel(slice))}</div>});
     return (
       <div key={key}
            className={ringSheet.classes['labels-' + block.level]}>

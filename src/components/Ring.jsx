@@ -1,20 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import shouldPureComponentUpdate from 'react-pure-render/function';
 import Slice from './Slice';
+import SliceLabel from './SliceLabel';
 import getDefaultColor from '../utils/getDefaultColor';
 import useSheet from 'react-jss';
 import classNames from 'classnames';
 
 @useSheet({
-  slice: { },
-
   sliceActive: {
     cursor: 'pointer'
-  },
-
-  backgroundRect: {
-    visibility: 'none',
-    'pointer-events': 'none'
   }
 })
 export default class Ring extends Component {
@@ -24,6 +18,7 @@ export default class Ring extends Component {
     sliceRadiusRange: Slice.propTypes.sliceRadiusRange,
     onClick: Slice.propTypes.onClick,
     getTitle: PropTypes.func,
+    getLabel: PropTypes.func,
 
     level: PropTypes.number.isRequired,
     center: PropTypes.number.isRequired,
@@ -36,30 +31,34 @@ export default class Ring extends Component {
 
   render() {
     const { slices, level, sliceRadiusRange, center, stroke, strokeWidth,
-            onClick, getTitle, className, getSliceProps, sheet: { classes } } = this.props;
+            onClick, getTitle, getLabel, className, getSliceProps, sheet: { classes } } = this.props;
     const rectSize = sliceRadiusRange.end + 20;
     const hasChildren = s => s.node.children && s.node.children.length > 0;
+    const slicesProps = slices.map((slice, idx) => {
+      return getSliceProps(slice, idx, {
+        key: idx,
+        node: slice.node,
+        angleRange: { start: slice.start, end: slice.end },
+        percentValue: slice.percentValue.toFixed(1),
+        fill: getDefaultColor(level, idx),
+        className: classNames({
+          [classes.sliceActive]: hasChildren(slice),
+          [classes.slice]: true
+        }),
+        stroke, strokeWidth, sliceRadiusRange, onClick, level,
+        title: getTitle(slice, slice.node.title),
+        label: getLabel(slice, slice.node.label)
+      });
+    });
 
     return (
       <g className={className}>
-        <rect x={center - rectSize} y={center - rectSize}
-              width={rectSize * 2} height={rectSize * 2}
-              fill='transparent' className={classes.backgroundRect} />
-        {slices.map((slice, idx) =>
-          <Slice {...getSliceProps(slice, idx, {
-            key: idx,
-            node: slice.node,
-            angleRange: { start: slice.start, end: slice.end },
-            percentValue: slice.percentValue.toFixed(1),
-            fill: getDefaultColor(level, idx),
-            className: classNames({
-              [classes.sliceActive]: hasChildren(slice),
-              [classes.slice]: true
-            }),
-            stroke, strokeWidth, sliceRadiusRange, onClick, level,
-            title: getTitle(slice, slice.node.title)
-          })} />
-        )}
+        {slicesProps.map(sliceProps => {
+          return <Slice {...sliceProps} />;
+        })}
+        {slicesProps.map(sliceProps => {
+          return <SliceLabel {...sliceProps} />;
+        })}
       </g>
     );
   }

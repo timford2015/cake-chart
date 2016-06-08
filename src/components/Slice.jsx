@@ -18,7 +18,9 @@ export default class Slice extends Component {
     strokeWidth: PropTypes.number,
     className: PropTypes.string,
     onClick: PropTypes.func,
-    node: PropTypes.any
+    node: PropTypes.any,
+    title: PropTypes.string,
+    label: PropTypes.string
   }
 
   static defaultProps = {
@@ -48,13 +50,15 @@ export default class Slice extends Component {
   }
 
   render () {
-    const { fill, stroke, strokeWidth, className } = this.props;
+    const { fill, stroke, strokeWidth, className, title } = this.props;
     return (
-      <path d={this.drawPath()}
-            onClick={this.handleClick}
-            {...{ fill, stroke, strokeWidth, className }}>
-        <title>{this.props.title}</title>
-      </path>
+      <g>
+        <path d={this.drawPath()}
+              onClick={this.handleClick}
+              {...{ fill, stroke, strokeWidth, className }}>
+          <title>{title}</title>
+        </path>
+      </g>
     );
   }
 
