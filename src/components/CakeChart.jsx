@@ -208,8 +208,7 @@ export default class CakeChart extends Component {
                                 transitionName={transitionName}
                                 transitionEnterTimeout={500}
                                 transitionLeaveTimeout={300}
-                                transitionAppear={true}
-                                transitionAppearTimeout={500}>
+                                transitionAppear={true}>
               {sliceTree.map((block, idx) =>
                 <Ring {...getRingProps(block, {
                   key: `${idx}-${key}`,
