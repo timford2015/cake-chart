@@ -25,8 +25,12 @@ const TREE = {
     value: 30,
     children: []
   }, {
-    label: '20',
-    value: 20,
+    label: '19',
+    value: 19,
+    children: []
+  }, {
+    label: '1',
+    value: 1,
     children: []
   }]
 };

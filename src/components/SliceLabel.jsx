@@ -25,7 +25,7 @@ export default class SliceLabel extends Component {
     const { fill, stroke, strokeWidth, angleRange, sliceRadiusRange, label } = this.props;
     const showLabel = angleRange.end - angleRange.start > 15;
     if (!showLabel) {
-        return undefined;
+        return null;
     }
     const labelPos = getAnglePoint((angleRange.start + angleRange.end) / 2, 0, (sliceRadiusRange.end + sliceRadiusRange.start) / 1.8, 0, 0);
     const width = 48 + 10 * label.length;
