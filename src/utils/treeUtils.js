@@ -1,3 +1,5 @@
+require("babel-polyfill");
+
 export default function* dft(root, children) {
   var nodes = [root];
   while (nodes.length > 0) {
